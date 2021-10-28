@@ -1,13 +1,15 @@
-variable "TF_VAR_instance_type" {
-  description = "Value of the EC2 instance type"
+
+variable "instance_type" {
+  description = "Value of the instance type for the EC2 instance"
   type        = string
   default     = "t2.micro"
 }
 
-variable "TF_VAR_instance_name" {
+
+variable "instance_name" {
   description = "Value of the Name tag for the EC2 instance"
   type        = string
-  default     = "ExampleAppServerInstance"
+  default     = "Updated Name"
 }
 
 variable "aws_region" {
