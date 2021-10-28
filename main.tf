@@ -3,7 +3,7 @@ terraform {
     organization = "terraform-tutorial-leo"
 
     workspaces {
-      name = "terraform-tutorial-vcs-flow"
+      name = "terraform-tutorial-flow-vcs"
     }
   }
   required_providers {
