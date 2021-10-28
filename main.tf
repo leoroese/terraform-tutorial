@@ -16,8 +16,8 @@ terraform {
 }
 
 provider "aws" {
-  profile = "default"
-  region  = "us-east-2"
+  profile = var.aws_profile
+  region  = var.aws_region
 }
 
 resource "aws_instance" "app_server" {
@@ -28,27 +28,3 @@ resource "aws_instance" "app_server" {
     Name = var.TF_VAR_instance_name
   }
 }
-
-
-variable "TF_VAR_instance_type" {
-  description = "Value of the EC2 instance type"
-  type        = string
-  default     = "t2.micro"
-}
-
-variable "TF_VAR_instance_name" {
-  description = "Value of the Name tag for the EC2 instance"
-  type        = string
-  default     = "ExampleAppServerInstance"
-}
-
-output "instance_id" {
-  description = "ID of the EC2 instance"
-  value       = aws_instance.app_server.id
-}
-
-output "instance_public_ip" {
-  description = "Public IP address of the EC2 instance"
-  value       = aws_instance.app_server.public_ip
-}
-
