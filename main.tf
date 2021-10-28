@@ -31,9 +31,9 @@ resource "aws_instance" "app_server" {
 
 
 variable "TF_VAR_instance_type" {
-  description = "Value of the Name tag for the EC2 instance"
+  description = "Value of the EC2 instance type"
   type        = string
-  default     = "ExampleAppServerInstance"
+  default     = "t2.micro"
 }
 
 variable "TF_VAR_instance_name" {
