@@ -22,16 +22,21 @@ provider "aws" {
 
 resource "aws_instance" "app_server" {
   ami           = "ami-074cce78125f09d61"
-  instance_type = "t2.micro"
+  instance_type = var.TF_VAR_instance_type
 
   tags = {
-    Name = var.instance_name
+    Name = var.TF_VAR_instance_name
   }
 }
 
 
+variable "TF_VAR_instance_type" {
+  description = "Value of the Name tag for the EC2 instance"
+  type        = string
+  default     = "ExampleAppServerInstance"
+}
 
-variable "instance_name" {
+variable "TF_VAR_instance_name" {
   description = "Value of the Name tag for the EC2 instance"
   type        = string
   default     = "ExampleAppServerInstance"
