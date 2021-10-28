@@ -1,8 +1,9 @@
 terraform {
   backend "remote" {
-    organization = "documentation-nerds"
+    organization = "terraform-tutorial-leo"
+
     workspaces {
-      name = "terraform-tutorial"
+      name = "terraform-tutorial-cli-flow"
     }
   }
   required_providers {
@@ -12,43 +13,19 @@ terraform {
     }
   }
 
-  required_version = ">= 1.0.9"
+  required_version = ">= 0.14.9"
 }
 
 provider "aws" {
-  profile = "default"
-  region  = "us-east-2"
+  profile = var.aws_profile
+  region  = var.aws_region
 }
 
 resource "aws_instance" "app_server" {
-  ami           = "ami-074cce78125f09d61"
-  instance_type = var.TF_VAR_instance_type
+  ami           = "ami-0ba62214afa52bec7"
+  instance_type = var.instance_type
 
   tags = {
-    Name = var.TF_VAR_instance_name
+    Name = var.instance_name
   }
 }
-
-
-variable "TF_VAR_instance_type" {
-  description = "Value of the EC2 instance type"
-  type        = string
-  default     = "t2.micro"
-}
-
-variable "TF_VAR_instance_name" {
-  description = "Value of the Name tag for the EC2 instance"
-  type        = string
-  default     = "ExampleAppServerInstance"
-}
-
-output "instance_id" {
-  description = "ID of the EC2 instance"
-  value       = aws_instance.app_server.id
-}
-
-output "instance_public_ip" {
-  description = "Public IP address of the EC2 instance"
-  value       = aws_instance.app_server.public_ip
-}
-
