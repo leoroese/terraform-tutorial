@@ -25,7 +25,7 @@ resource "aws_instance" "app_server" {
   instance_type = var.TF_VAR_instance_type
 
   tags = {
-    Name = var.instance_name
+    Name = var.TF_VAR_instance_name
   }
 }
 
