@@ -48,8 +48,9 @@ resource "aws_iam_role_policy" "example" {
     "Statement" = [{
       # This policy allows software running on the EC2 instance to
       # access the S3 API.
-      "Action" = "s3:*",
-      "Effect" = "Allow",
+      "Action"   = "s3:*",
+      "Effect"   = "Allow",
+      "Resource" = "*"
     }],
   })
 }
