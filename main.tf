@@ -1,10 +1,10 @@
 terraform {
-  # backend "remote" {
-  #   organization = "documentation-nerds"
-  #   workspaces {
-  #     name = "terraform-tutorial"
-  #   }
-  # }
+  backend "remote" {
+    organization = "documentation-nerds"
+    workspaces {
+      name = "terraform-tutorial"
+    }
+  }
   required_providers {
     aws = {
       source  = "hashicorp/aws"
