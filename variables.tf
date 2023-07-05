@@ -21,5 +21,5 @@ variable "aws_region" {
 variable "aws_profile" {
   description = "Value of aws profile"
   type        = string
-  default     = "default"
+  default     = "terraform"
 }

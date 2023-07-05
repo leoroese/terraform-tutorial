@@ -1,9 +1,9 @@
 terraform {
   backend "remote" {
-    organization = "terraform-tutorial-leo"
+    organization = "Abingwas-Foundation"
 
     workspaces {
-      name = "terraform-tutorial-flow-vcs"
+      name = "Abingwa_CLI_Flow"
     }
   }
   required_providers {
@@ -15,7 +15,9 @@ terraform {
 
   required_version = ">= 0.14.9"
 }
+    
 
+  
 provider "aws" {
   profile = var.aws_profile
   region  = var.aws_region
