@@ -1,69 +1,60 @@
-terraform {
-  backend "remote" {
-    organization = "terraform-tutorial-leo"
+#create a VPC
+module "vpc" {
+  source = "terraform-aws-modules/vpc/aws"
 
-    workspaces {
-      name = "terraform-tutorial-flow-vcs"
-    }
-  }
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 3.27"
-    }
-  }
+  name = "my-vpc"
+  cidr = "10.0.0.0/16"
 
-  required_version = ">= 0.14.9"
-}
+  azs             = var.azs
+  private_subnets = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
+  public_subnets  = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
 
-provider "aws" {
-  profile = var.aws_profile
-  region  = var.aws_region
-}
-
-resource "aws_iam_role" "test_role" {
-  name = "test_role"
-
-  # Terraform's "jsonencode" function converts a
-  # Terraform expression result to valid JSON syntax.
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = "sts:AssumeRole"
-        Effect = "Allow"
-        Sid    = ""
-        Principal = {
-          Service = "ec2.amazonaws.com"
-        }
-      },
-    ]
-  })
-}
-
-resource "aws_iam_role_policy" "example" {
-  name = "example"
-  role = aws_iam_role.test_role.name
-  policy = jsonencode({
-    "Statement" = [{
-      # This policy allows software running on the EC2 instance to
-      # access the S3 API.
-      "Action"   = "s3:*",
-      "Effect"   = "Allow",
-      "Resource" = "*"
-    }],
-  })
-}
-
-resource "aws_instance" "app_server" {
-  ami           = "ami-074cce78125f09d61"
-  instance_type = var.instance_type
+  enable_nat_gateway = false
+  enable_vpn_gateway = false
 
   tags = {
-    Name = var.instance_name
+    Terraform = "true"
+    Environment = "dev"
+  }
+}
+
+#Create Security Group
+resource "aws_security_group" "my_sg" {
+  name        = "allow_ssh"
+  description = "Allow SSH inbound traffic"
+  vpc_id      = module.vpc.vpc_id
+
+  ingress {
+    description      = "SSH from VPC"
+    from_port        = 22
+    to_port          = 22
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
   }
 
-  depends_on = [
-    aws_iam_role_policy.example
-  ]
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  tags = {
+    Name = "allow_ssh"
+  }
+}
+
+# Create EC2 instance the vpc_security_group_ids is refrence from the security resource, the subnet_id is refrence from the vpc module where [0] represent the first string of the public_subnet list. 
+#To enable public IP, we enable subnet_id to true.
+resource "aws_instance" "app_server" {
+  ami           = "ami-024e6efaf93d85776"
+  instance_type = var.instance_type
+  subnet_id = module.vpc.public_subnets[0]
+  associate_public_ip_address = true
+  count = 5
+  tags = {
+    Name = local.Name
+    Method = local.Method
+  }
 }
