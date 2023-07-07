@@ -14,9 +14,7 @@ terraform {
   }
 }
 
-
 provider "aws" {
-  # Configuration options
-  profile = "Terraform"
-  region = "us-east-2"
+  profile = var.aws_profile
+  region  = var.aws_region
 }
