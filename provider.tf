@@ -1,5 +1,5 @@
 terraform {
-  backend "remote" {
+  cloud {
     organization = "Abingwas-Foundation"
 
     workspaces {
@@ -9,12 +9,11 @@ terraform {
  required_providers {
     aws = {
       source = "hashicorp/aws"
-      version = "5.5.0"
+      version = "5.6.2"
     }
   }
 }
 
 provider "aws" {
-  profile = var.aws_profile
-  region  = var.aws_region
+  region = "us-east-2"
 }
