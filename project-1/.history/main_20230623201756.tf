@@ -1,0 +1,24 @@
+terraform {
+  required_providers {
+    aws = {
+      source = "hashicorp/aws"
+      version = "5.5.0"
+    }
+  }
+}
+
+provider "aws" {
+  # Configuration options
+  profile = "Terraform"
+  region = "us-east-2"
+}
+
+# Create EC2 instance
+resource "aws_instance" "app_server" {
+  ami           = "ami-024e6efaf93d85776"
+  instance_type = "t2.micro"
+
+  tags = {
+    Name = "Ubuntu-Test-Instance"
+  }
+}
