@@ -1,11 +1,11 @@
 #Creating an input variable
 variable "instance_type" {
   type = string
-  default = "t2.micro"
+  default = "t2.large"
 }
 
 variable "azs" {
   type = list(string)
-  default = [ "us-east-2a", "us-east-2b", "us-east-2c" ]
+  default = [ "us-west-1b", "us-west-1c" ]
 }
 

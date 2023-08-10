@@ -3,14 +3,14 @@ module "vpc" {
   source = "terraform-aws-modules/vpc/aws"
 
 
-  name = "NewEraVPC"
+  name = "sqltoredshiftvpc"
   cidr = "10.0.0.0/16"
 
   azs             = var.azs
   private_subnets = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
   public_subnets  = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
 
-  enable_nat_gateway = false
+  enable_nat_gateway = true
   enable_vpn_gateway = false
 
   tags = {
@@ -29,15 +29,15 @@ resource "aws_subnet" "pub_sub" {
 # Create an EC2 instance
 resource "aws_instance" "web_server" {
   #ami = data.aws_ami.amzn.id
-  ami = "ami-03f38e546e3dc59e1"
+  ami = "ami-0f8e81a3da6e2510a"
   instance_type = var.instance_type
   vpc_security_group_ids = [aws_security_group.my_sg.id]
   subnet_id =   aws_subnet.pub_sub.id
   associate_public_ip_address = true
   for_each = {
-    Naomie = "Instance-1"
-    Cally = "Instance-2"
-    Lizzy = "Instance-3"
+    k8s-control = "Instance-1"
+    k8s-worker1= "Instance-2"
+    k8s-worker2 = "Instance-3"
   }
 
   tags = {

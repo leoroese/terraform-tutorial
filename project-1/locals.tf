@@ -1,4 +1,4 @@
 locals {
-  Name = "Ansible_Server"
+  Name = "K8s_Server"
   Method = "terraform"
 }
