@@ -17,7 +17,7 @@ provider "aws" {
 
 terraform {
   cloud {
-    organization = "Abingwas-Foundation"
+    organization = "K8s_setup"
 
     workspaces {
       name = "K8s_setup"
