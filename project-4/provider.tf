@@ -20,7 +20,7 @@ terraform {
     organization = "Abingwas-Foundation"
 
     workspaces {
-      name = "terraform-tutorial"
+      name = "Abingwa_CLI_Flow"
     }
   }
   required_providers {
