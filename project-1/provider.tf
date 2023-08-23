@@ -1,22 +1,18 @@
 terraform {
+  cloud {
+    organization = "Abingwas-Foundation"
+
+    workspaces {
+      name = "Hyper-V_setup"
+    }
+  }
   required_providers {
     aws = {
       source = "hashicorp/aws"
-      version = "5.5.0"
+      version = "5.13.1"
     }
   }
 }
 
-
 provider "aws" {
-  # Configuration options
-  profile = "default"
-  region = "us-west-1"
 }
-
-/*provider "aws" {
-  profile = "Terraform"
-  region = "us-east-1"
-  alias = "us"
-}*/
-
