@@ -1,4 +1,3 @@
-#create a VPC
 module "vpc" {
   source = "terraform-aws-modules/vpc/aws"
 
@@ -18,6 +17,12 @@ module "vpc" {
   }
 }
 
+#create Subnebt
+resource "aws_subnet" "main" {
+  vpc_id     = aws_vpc.main.id
+  cidr_block = "10.0.1.0/24"
+
+  
 #Create Security Group
 resource "aws_security_group" "my_sg" {
   name        = "allow_ssh"
@@ -28,6 +33,13 @@ resource "aws_security_group" "my_sg" {
     description      = "SSH from VPC"
     from_port        = 22
     to_port          = 22
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
+   ingress {
+    description      = "HTTP from Public"
+    from_port        = 80
+    to_port          = 80
     protocol         = "tcp"
     cidr_blocks      = ["0.0.0.0/0"]
   }
@@ -42,19 +54,5 @@ resource "aws_security_group" "my_sg" {
 
   tags = {
     Name = "allow_ssh"
-  }
-}
-
-# Create EC2 instance the vpc_security_group_ids is refrence from the security resource, the subnet_id is refrence from the vpc module where [0] represent the first string of the public_subnet list. 
-#To enable public IP, we enable subnet_id to true.
-resource "aws_instance" "app_server" {
-  ami           = "ami-024e6efaf93d85776"
-  instance_type = var.instance_type
-  subnet_id = module.vpc.public_subnets[0]
-  associate_public_ip_address = true
-  count = 5
-  tags = {
-    Name = local.Name
-    Method = local.Method
   }
 }

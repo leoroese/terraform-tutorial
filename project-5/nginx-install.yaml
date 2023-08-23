@@ -1,0 +1,7 @@
+#cloud-init
+packages:
+  - nginx
+  - lynx
+runcmd:
+  - systemctl enable nginx
+  - systemctl start nginx
